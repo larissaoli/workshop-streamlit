@@ -14,3 +14,17 @@ def load_data(nrows):
     data.rename(lowercase, axis='columns', inplace=True)
     data[DATE_COLUMN] = pd.to_datetime(data[DATE_COLUMN])
     return data
+
+@st.cache
+def load_data(nrows):
+    data_load_state.text("Done! (using st.cache)")
+
+st.subheader('Number of pickups by hour')
+
+hist_values = np.histogram(
+    data[DATE_COLUMN].dt.hour, bins=24, range=(0,24))[0]
+
+st.bar_chart(hist_values)
+
+st.subheader('Map of all pickups')
+st.map(data)
